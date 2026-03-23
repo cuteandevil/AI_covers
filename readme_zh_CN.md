@@ -49,7 +49,7 @@
 
 1. **克隆仓库**（如果尚未完成）：
    ```bash
-   git clone <repo-url> D:\AI_covers
+   git clone https://github.com/cuteandevil/AI_covers D:\AI_covers
    cd D:\AI_covers
    ```
 
