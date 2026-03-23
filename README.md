@@ -49,7 +49,7 @@ input audio
 
 1. **Clone the repository** (if not already done):
    ```bash
-   git clone <repo-url> D:\AI_covers
+   git clone https://github.com/cuteandevil/AI_covers D:\AI_covers
    cd D:\AI_covers
    ```
 
