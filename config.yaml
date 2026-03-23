@@ -1,0 +1,62 @@
+# Configuration for AI Cover Generator
+
+paths:
+  input_dir: ./data/input
+  output_dir: ./data/output
+  models_dir: ./models
+  asr_model: whisper_base.en
+  speaker_encoder: ecapa_tdnn
+  f0_extractor: crepe
+  vocoder: waveglow
+
+asr:
+  model_name: openai/whisper-base.en
+  language: en  # or zh for Chinese
+  task: transcribe
+
+speaker_encoder:
+  model_path: ./models/speaker_encoder.pt
+  embedding_dim: 256
+
+f0_extractor:
+  method: crepe  # alternatives: dio, harvest
+  f0_min: 50
+  f0_max: 500
+  hop_length: 160
+
+vocoder:
+  type: waveglow  # or hifigan
+  checkpoint: ./models/vocoder_waveglow.pt
+  # For HiFi-GAN:
+  # checkpoint: ./models/vocoder_hifigan.pt
+
+adaptive_learner:
+  meta_batch_size: 4
+  inner_lr: 0.01
+  outer_lr: 0.001
+  adaptation_steps: 5
+  # Few-shot threshold: minutes of target audio required
+  few_shot_minutes: 3
+
+quality_monitor:
+  enable: true
+  artifact_threshold: 0.7  # higher = more sensitive
+  max_correction_iterations: 2
+
+edge_deployment:
+  enable: false
+  backend: tensorrt  # or openvino
+  precision: fp16
+
+logging:
+  level: INFO
+  file: ./logs/app.log
+
+# Frontend source separation (vocals/accompaniment) using Demucs
+source_separation:
+  enable: false          # Set to true to enable vocal separation before ASR
+  model: demucs_quantized  # Options: demucs_quantized, demucs, hdemucs_mmi, etc.
+  # Optional tuning parameters (keep defaults if unsure)
+  segment: 10            # Length of segments for Demucs processing (seconds)
+  shifts: 1              # Number of shifts for ensembling (0 = none, increases quality but slower)
+  overlap: 0.25          # Overlap between segments (0.0 - 1.0)
